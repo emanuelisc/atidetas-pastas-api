@@ -37,5 +37,17 @@
 # Build data
 /build/
 
+# Vendor data
+/vendor/*
+
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
+
+# Workspace data
+/.idea/*
+
+# Db file
+/app/config/parameters.yml
+
+/composer.lock
+
