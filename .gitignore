@@ -49,5 +49,4 @@
 # Db file
 /app/config/parameters.yml
 
-/composer.lock
 
