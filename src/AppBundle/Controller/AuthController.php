@@ -72,6 +72,9 @@ class AuthController extends FOSRestController
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
 
+        $role = new vart_role;
+        $role->setUser();
+
         $saugus = md5($slaptazodis);
         $data->setVardas($vardas);
         $data->setPavarde($pavarde);
