@@ -12,7 +12,7 @@ use FOS\RestBundle\View\View;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-// return new JSonResponse(
+// return new JSonResponse( 
 //     array('meta' => array('code' => $myStatusCode,
 //                           'message' => 'Your request failed because...'),
 //           'data' => array('your datas')

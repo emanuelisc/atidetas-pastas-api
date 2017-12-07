@@ -28,13 +28,13 @@ class vart_role
      * @ORM\ManyToOne(targetEntity="User", inversedBy="vart_roles")
      * @ORM\JoinColumn(name="vartotojo_id", referencedColumnName="id")
      */
-    private $vartotojoId;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="vart_roles")
      * @ORM\JoinColumn(name="roles_id", referencedColumnName="id")
      */
-    private $rolesId;
+    private $role;
 
 
     /**
@@ -47,53 +47,6 @@ class vart_role
         return $this->id;
     }
 
-    /**
-     * Set vartotojoId
-     *
-     * @param integer $vartotojoId
-     *
-     * @return vart_role
-     */
-    public function setVartotojoId($vartotojoId)
-    {
-        $this->vartotojoId = $vartotojoId;
-
-        return $this;
-    }
-
-    /**
-     * Get vartotojoId
-     *
-     * @return int
-     */
-    public function getVartotojoId()
-    {
-        return $this->vartotojoId;
-    }
-
-    /**
-     * Set rolesId
-     *
-     * @param integer $rolesId
-     *
-     * @return vart_role
-     */
-    public function setRolesId($rolesId)
-    {
-        $this->rolesId = $rolesId;
-
-        return $this;
-    }
-
-    /**
-     * Get rolesId
-     *
-     * @return int
-     */
-    public function getRolesId()
-    {
-        return $this->rolesId;
-    }
 
     /**
      * Set user
@@ -114,7 +67,7 @@ class vart_role
      */
     public function getUser()
     {
-        return $this->User;
+        return $this->user;
     }
 
     /**

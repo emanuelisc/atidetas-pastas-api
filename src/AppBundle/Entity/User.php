@@ -38,14 +38,14 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="vardas", type="string", length=20)
+     * @ORM\Column(name="vardas", type="string", length=255)
      */
     private $vardas;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pavarde", type="string", length=20)
+     * @ORM\Column(name="pavarde", type="string", length=255)
      */
     private $pavarde;
 
@@ -67,7 +67,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="pastas", type="string", length=20)
+     * @ORM\Column(name="pastas", type="string", length=255)
      */
     private $pastas;
 
