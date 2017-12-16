@@ -261,16 +261,6 @@ class Uzsakymas
     /**
      * Set apmokejimas
      *
-     * @param string $ap
-     */
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-    }
-
-    /**
-     * Set apmokejimas
-     *
      * @param \AppBundle\Entity\Apmokejimas $apmokejimas
      *
      * @return Uzsakymas
@@ -315,11 +305,11 @@ class Uzsakymas
     /**
      * Set vartotojas
      *
-     * @param \AppBundle\Entity\Vartotojas $vartotojas
+     * @param \AppBundle\Entity\User $vartotojas
      *
      * @return Uzsakymas
      */
-    public function setVartotojas(\AppBundle\Entity\Vartotojas $vartotojas = null)
+    public function setVartotojas(\AppBundle\Entity\User $vartotojas = null)
     {
         $this->vartotojas = $vartotojas;
         return $this;
@@ -327,7 +317,7 @@ class Uzsakymas
     /**
      * Get vartotojas
      *
-     * @return \AppBundle\Entity\vartotojas
+     * @return \AppBundle\Entity\User
      */
     public function getVartotojas()
     {

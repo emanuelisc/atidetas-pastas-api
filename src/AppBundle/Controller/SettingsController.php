@@ -102,6 +102,177 @@ class SettingsController extends FOSRestController
         }
     }
 
+    /**
+     * @Rest\Post("/SetPriceCalcCofs/CarrierPrice")
+     */
+    public function setSettingCarrierPriceAction(Request $request)
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+
+            //Va cia tai kodas
+            $settings = $em->getRepository('AppBundle:Settings')->find(1);
+            $carrier_price = $request->get('carrier_price');
+            if($settings === null){
+                $data = new Settings;
+                $data->setCarrierPrice($carrier_price);
+                $em->persist($data);
+                $em->flush();
+
+                return new View("Settings Inserted Successfully", Response::HTTP_OK);
+            }
+            else{
+                $settings->setCarrierPrice($carrier_price);
+                $em->flush();
+                return new View("Settings Updated Successfully", Response::HTTP_OK);
+            }
+        }
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @Rest\Post("/SetPriceCalcCofs/Margin")
+     */
+    public function setSettingMarginAction(Request $request)
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+
+            //Va cia tai kodas
+            $settings = $em->getRepository('AppBundle:Settings')->find(1);
+            $margin = $request->get('margin');
+            if($settings === null){
+                $data = new Settings;
+                $data->setMargin($margin);
+                $em->persist($data);
+                $em->flush();
+
+                return new View("Settings Inserted Successfully", Response::HTTP_OK);
+            }
+            else{
+                $settings->setMargin($margin);
+                $em->flush();
+                return new View("Settings Updated Successfully", Response::HTTP_OK);
+            }
+        }
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @Rest\Post("/SetPriceCalcCofs/WarehousingPrice")
+     */
+    public function setSettingWarehousingAction(Request $request)
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+
+            //Va cia tai kodas
+            $settings = $em->getRepository('AppBundle:Settings')->find(1);
+            $warehousing_price = $request->get('warehousing_price');
+            if($settings === null){
+                $data = new Settings;
+                $data->setWarehousingPrice($warehousing_price);
+                $em->persist($data);
+                $em->flush();
+
+                return new View("Settings Inserted Successfully", Response::HTTP_OK);
+            }
+            else{
+                $settings->setWarehousingPrice($warehousing_price);
+                $em->flush();
+                return new View("Settings Updated Successfully", Response::HTTP_OK);
+            }
+        }
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
     //     /**
     //  * @Rest\Get("/testas")
     //  */

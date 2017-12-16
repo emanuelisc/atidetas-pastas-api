@@ -15,12 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User
 {
-
-    /**
-     * @ORM\OneToMany(targetEntity="Uzsakymas", mappedBy="user", cascade={"remove"})
-     */
-    private $uzsakymai;
-
     /**
      * @ORM\OneToMany(targetEntity="pran_vart", mappedBy="user", cascade={"remove"})
      */
@@ -30,6 +24,11 @@ class User
      * @ORM\OneToMany(targetEntity="vart_role", mappedBy="user", cascade={"remove"})
      */
     private $vart_roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Uzsakymas", mappedBy="user", cascade={"remove"})
+     */
+    private $uzsakymai;
 
     /**
      * @ORM\ManyToOne(targetEntity="Miestas", inversedBy="users")
@@ -300,6 +299,7 @@ class User
     {
         $this->vart_roles = new ArrayCollection();
         $this->uzsakymai = new ArrayCollection();
+        $this->pran_varts = new ArrayCollection();
     }
     /**
      * Add vart_role
@@ -332,7 +332,7 @@ class User
         return $this->vart_roles;
     }
 
-        /**
+    /**
      * Add pran_vart
      *
      * @param \AppBundle\Entity\pran_vart $pran_vart
@@ -360,7 +360,7 @@ class User
      */
     public function getPran_varts()
     {
-        return $this->vart_roles;
+        return $this->pran_varts;
     }
 
     /**
