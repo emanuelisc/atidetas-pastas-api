@@ -7,20 +7,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- * Miestas
+ * uzsakymo_busena
  *
- * @ORM\Table(name="miestas")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MiestasRepository")
+ * @ORM\Table(name="uzsakymo_busena")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\uzsakymo_busenaRepository")
  */
-class Miestas
+class uzsakymo_busena
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="miestas", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Uzsakymas", mappedBy="uzsakymo_busena", cascade={"remove"})
      */
-    private $users;
+    private $uzsakymai;
 
     /**
      * @var int
@@ -54,7 +53,7 @@ class Miestas
      *
      * @param string $pavadinimas
      *
-     * @return Miestas
+     * @return uzsakymo_busena
      */
     public function setPavadinimas($pavadinimas)
     {
@@ -75,38 +74,37 @@ class Miestas
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->uzsakymai = new ArrayCollection();
     }
     /**
-     * Add user
+     * Add uzsakymas
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Uzsakymas $uzsakymas
      *
-     * @return Miestas
+     * @return uzsakymo_busena
      */
-    public function addUser(\AppBundle\Entity\User $user)
+    public function addUzsakymas(\AppBundle\Entity\Uzsakymas $uzsakymas)
     {
-        $this->users[] = $user;
+        $this->uzsakymai[] = $uzsakymas;
         return $this;
     }
     /**
-     * Remove user
+     * Remove uzsakymas
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Uzsakymas $uzsakymas
      */
-    public function removeUser(\AppBundle\Entity\User $user)
+    public function removeUzsakymas(\AppBundle\Entity\Uzsakymas $uzsakymas)
     {
-        $this->users->removeElement($user);
+        $this->uzsakymai->removeElement($uzsakymas);
     }
     /**
-     * Get users
+     * Get uzsakymai
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
+    public function getUzsakymai()
     {
-        return $this->users;
+        return $this->uzsakymai;
     }
-
 }
 

@@ -7,21 +7,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- * Miestas
+ * pervedimo_tipas
  *
- * @ORM\Table(name="miestas")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MiestasRepository")
+ * @ORM\Table(name="pervedimo_tipas")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\pervedimo_tipasRepository")
  */
-class Miestas
+class pervedimo_tipas
 {
-
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="miestas", cascade={"remove"})
+     /**
+     * @ORM\OneToMany(targetEntity="Apmokejimas", mappedBy="pervedimo_tipas", cascade={"remove"})
      */
-    private $users;
-
+    private $apmokejimai;
+    
     /**
      * @var int
      *
@@ -54,7 +52,7 @@ class Miestas
      *
      * @param string $pavadinimas
      *
-     * @return Miestas
+     * @return pervedimo_tipas
      */
     public function setPavadinimas($pavadinimas)
     {
@@ -73,40 +71,40 @@ class Miestas
         return $this->pavadinimas;
     }
 
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->apmokejimai = new ArrayCollection();
     }
     /**
-     * Add user
+     * Add apmokejimas
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Apmokejimas $apmokejimas
      *
-     * @return Miestas
+     * @return pervedimo_tipas
      */
-    public function addUser(\AppBundle\Entity\User $user)
+    public function addApmokejimas(\AppBundle\Entity\Apmokejimas $apmokejimas)
     {
-        $this->users[] = $user;
+        $this->apmokejimai[] = $apmokejimas;
         return $this;
     }
     /**
-     * Remove user
+     * Remove apmokejimas
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Apmokejimas $apmokejimas
      */
-    public function removeUser(\AppBundle\Entity\User $user)
+    public function removeApmokejimas(\AppBundle\Entity\Apmokejimas $apmokejimas)
     {
-        $this->users->removeElement($user);
+        $this->apmokejimai->removeElement($apmokejimas);
     }
     /**
-     * Get users
+     * Get apmokejimai
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
+    public function getApmokejimai()
     {
-        return $this->users;
+        return $this->apmokejimai;
     }
-
 }
 

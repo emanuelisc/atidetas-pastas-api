@@ -3,14 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Atsargines_kopijos
+ * Atsargine_kopija
  *
- * @ORM\Table(name="atsargines_kopijos")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Atsargines_kopijosRepository")
+ * @ORM\Table(name="atsargine_kopija")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Atsargine_kopijaRepository")
  */
-class Atsargines_kopijos
+class Atsargine_kopija
 {
     /**
      * @var int
@@ -51,7 +54,7 @@ class Atsargines_kopijos
      *
      * @param \DateTime $data
      *
-     * @return Atsargines_kopijos
+     * @return Atsargine_kopija
      */
     public function setData($data)
     {
@@ -75,7 +78,7 @@ class Atsargines_kopijos
      *
      * @param string $vieta
      *
-     * @return Atsargines_kopijos
+     * @return Atsargine_kopija
      */
     public function setVieta($vieta)
     {

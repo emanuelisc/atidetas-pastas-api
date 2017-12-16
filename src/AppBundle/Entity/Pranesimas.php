@@ -5,13 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Pranesimai
+ * Pranesimas
  *
- * @ORM\Table(name="pranesimai")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PranesimaiRepository")
+ * @ORM\Table(name="pranesimas")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PranesimasRepository")
  */
-class Pranesimai
+class Pranesimas
 {
+
+    /**
+     * @ORM\OneToMany(targetEntity="pran_vart", mappedBy="pranesimas", cascade={"remove"})
+     */
+    private $pran_varts;
+
     /**
      * @var int
      *
@@ -58,7 +64,7 @@ class Pranesimai
      *
      * @param string $tekstas
      *
-     * @return Pranesimai
+     * @return Pranesimas
      */
     public function setTekstas($tekstas)
     {
@@ -82,7 +88,7 @@ class Pranesimai
      *
      * @param string $pavadinimas
      *
-     * @return Pranesimai
+     * @return Pranesimas
      */
     public function setPavadinimas($pavadinimas)
     {
@@ -106,7 +112,7 @@ class Pranesimai
      *
      * @param \DateTime $data
      *
-     * @return Pranesimai
+     * @return Pranesimas
      */
     public function setData($data)
     {
@@ -123,6 +129,41 @@ class Pranesimai
     public function getData()
     {
         return $this->data;
+    }
+
+    public function __construct()
+    {
+        $this->pran_varts = new ArrayCollection();
+    }
+    /**
+     * Add pran_vart
+     *
+     * @param \AppBundle\Entity\pran_vart $pran_vart
+     *
+     * @return Role
+     */
+    public function addPran_vart(\AppBundle\Entity\pran_vart $pran_vart)
+    {
+        $this->pran_varts[] = $pran_vart;
+        return $this;
+    }
+    /**
+     * Remove pran_vart
+     *
+     * @param \AppBundle\Entity\pran_vart $pran_vart
+     */
+    public function removePran_vart(\AppBundle\Entity\pran_vart $pran_vart)
+    {
+        $this->pran_varts->removeElement($pran_vart);
+    }
+    /**
+     * Get pran_varts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPran_varts()
+    {
+        return $this->pran_varts;
     }
 }
 

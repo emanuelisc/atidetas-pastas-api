@@ -5,13 +5,20 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Siuntiniai
+ * Siuntinys
  *
- * @ORM\Table(name="siuntiniai")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SiuntiniaiRepository")
+ * @ORM\Table(name="siuntinys")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SiuntinysRepository")
  */
-class Siuntiniai
+class Siuntinys
 {
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Uzsakymas", inversedBy="siuntiniai")
+     * @ORM\JoinColumn(name="uzsakymo_id", referencedColumnName="id")
+     */
+    private $uzsakymas;
+
     /**
      * @var int
      *
@@ -86,7 +93,7 @@ class Siuntiniai
      *
      * @param float $aukstis
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setAukstis($aukstis)
     {
@@ -110,7 +117,7 @@ class Siuntiniai
      *
      * @param float $plotis
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setPlotis($plotis)
     {
@@ -134,7 +141,7 @@ class Siuntiniai
      *
      * @param float $ilgis
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setIlgis($ilgis)
     {
@@ -158,7 +165,7 @@ class Siuntiniai
      *
      * @param float $svoris
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setSvoris($svoris)
     {
@@ -182,7 +189,7 @@ class Siuntiniai
      *
      * @param \DateTime $sandelioPasiekimoData
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setSandelioPasiekimoData($sandelioPasiekimoData)
     {
@@ -206,7 +213,7 @@ class Siuntiniai
      *
      * @param \DateTime $sandelioPalikimoData
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setSandelioPalikimoData($sandelioPalikimoData)
     {
@@ -230,7 +237,7 @@ class Siuntiniai
      *
      * @param boolean $yraSandelyje
      *
-     * @return Siuntiniai
+     * @return Siuntinys
      */
     public function setYraSandelyje($yraSandelyje)
     {
@@ -247,6 +254,28 @@ class Siuntiniai
     public function getYraSandelyje()
     {
         return $this->yraSandelyje;
+    }
+
+    /**
+     * Set uzsakymas
+     *
+     * @param \AppBundle\Entity\Uzsakymas $uzsakymas
+     *
+     * @return Siuntinys
+     */
+    public function setUzsakymas(\AppBundle\Entity\Uzsakymas $uzsakymas = null)
+    {
+        $this->uzsakymas = $uzsakymas;
+        return $this;
+    }
+    /**
+     * Get uzsakymas
+     *
+     * @return \AppBundle\Entity\uzsakymas
+     */
+    public function getUzsakymas()
+    {
+        return $this->uzsakymas;
     }
 }
 

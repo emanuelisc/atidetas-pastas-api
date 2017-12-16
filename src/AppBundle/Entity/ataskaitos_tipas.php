@@ -7,21 +7,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- * Miestas
+ * ataskaitos_tipas
  *
- * @ORM\Table(name="miestas")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MiestasRepository")
+ * @ORM\Table(name="ataskaitos_tipas")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ataskaitos_tipasRepository")
  */
-class Miestas
+class ataskaitos_tipas
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="miestas", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Ataskaita", mappedBy="ataskaitos_tipas", cascade={"remove"})
      */
-    private $users;
-
+    private $ataskaitos;
     /**
      * @var int
      *
@@ -54,7 +52,7 @@ class Miestas
      *
      * @param string $pavadinimas
      *
-     * @return Miestas
+     * @return ataskaitos_tipai
      */
     public function setPavadinimas($pavadinimas)
     {
@@ -73,40 +71,40 @@ class Miestas
         return $this->pavadinimas;
     }
 
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->ataskaitos = new ArrayCollection();
     }
     /**
-     * Add user
+     * Add ataskaita
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Ataskaita $ataskaita
      *
-     * @return Miestas
+     * @return ataskaitos_tipai
      */
-    public function addUser(\AppBundle\Entity\User $user)
+    public function addAtaskaita(\AppBundle\Entity\Ataskaita $ataskaita)
     {
-        $this->users[] = $user;
+        $this->ataskaitos[] = $ataskaita;
         return $this;
     }
     /**
-     * Remove user
+     * Remove ataskaita
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\Ataskaita $ataskaita
      */
-    public function removeUser(\AppBundle\Entity\User $user)
+    public function removeAtaskaita(\AppBundle\Entity\Ataskaita $ataskaita)
     {
-        $this->users->removeElement($user);
+        $this->ataskaitos->removeElement($ataskaita);
     }
     /**
-     * Get users
+     * Get ataskaitos
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
+    public function getAtaskaitos()
     {
-        return $this->users;
+        return $this->ataskaitos;
     }
-
 }
 

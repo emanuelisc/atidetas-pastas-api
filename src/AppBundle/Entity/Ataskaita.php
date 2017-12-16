@@ -3,15 +3,24 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Ataskaitos
+ * Ataskaita
  *
- * @ORM\Table(name="ataskaitos")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AtaskaitosRepository")
+ * @ORM\Table(name="ataskaita")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AtaskaitaRepository")
  */
-class Ataskaitos
+class Ataskaita
 {
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ataskaitos_tipas", inversedBy="ataskaitos")
+     * @ORM\JoinColumn(name="tipas", referencedColumnName="id")
+     */
+    private $ataskaitos_tipas;
     /**
      * @var int
      *
@@ -65,7 +74,7 @@ class Ataskaitos
      *
      * @param string $tekstas
      *
-     * @return Ataskaitos
+     * @return Ataskaita
      */
     public function setTekstas($tekstas)
     {
@@ -89,7 +98,7 @@ class Ataskaitos
      *
      * @param \DateTime $data
      *
-     * @return Ataskaitos
+     * @return Ataskaita
      */
     public function setData($data)
     {
@@ -113,7 +122,7 @@ class Ataskaitos
      *
      * @param \DateTime $laikotarpisNuo
      *
-     * @return Ataskaitos
+     * @return Ataskaita
      */
     public function setLaikotarpisNuo($laikotarpisNuo)
     {
@@ -137,7 +146,7 @@ class Ataskaitos
      *
      * @param \DateTime $laikotarpisIki
      *
-     * @return Ataskaitos
+     * @return Ataskaita
      */
     public function setLaikotarpisIki($laikotarpisIki)
     {
@@ -154,6 +163,28 @@ class Ataskaitos
     public function getLaikotarpisIki()
     {
         return $this->laikotarpisIki;
+    }
+
+    /**
+     * Set ataskaitos_tipas
+     *
+     * @param \AppBundle\Entity\ataskaitos_tipai $ataskaitos_tipas
+     *
+     * @return Ataskaita
+     */
+    public function setAtaskaitosTipas(\AppBundle\Entity\ataskaitos_tipas $ataskaitos_tipas = null)
+    {
+        $this->ataskaitos_tipas = $ataskaitos_tipas;
+        return $this;
+    }
+    /**
+     * Get ataskaitos_tipas
+     *
+     * @return \AppBundle\Entity\ataskaitos_tipas
+     */
+    public function getAtaskaitosTipas()
+    {
+        return $this->ataskaitos_tipas;
     }
 }
 

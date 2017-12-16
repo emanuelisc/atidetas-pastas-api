@@ -3,15 +3,30 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Apmokejimai
+ * Apmokejimas
  *
- * @ORM\Table(name="apmokejimai")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ApmokejimaiRepository")
+ * @ORM\Table(name="apmokejimas")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApmokejimasRepository")
  */
-class Apmokejimai
+class Apmokejimas
 {
+
+    /**
+     * @ORM\ManyToOne(targetEntity="pervedimo_tipas", inversedBy="apmokejimai")
+     * @ORM\JoinColumn(name="pervedimo_tipas", referencedColumnName="id")
+     */
+    private $pervedimo_tipas;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Uzsakymas", mappedBy="apmokejimas")
+     */
+    protected $uzsakymas;
+
     /**
      * @var int
      *
@@ -58,7 +73,7 @@ class Apmokejimai
      *
      * @param float $suma
      *
-     * @return Apmokejimai
+     * @return Apmokejimas
      */
     public function setSuma($suma)
     {
@@ -82,7 +97,7 @@ class Apmokejimai
      *
      * @param boolean $arPatvirtintas
      *
-     * @return Apmokejimai
+     * @return Apmokejimas
      */
     public function setArPatvirtintas($arPatvirtintas)
     {
@@ -106,7 +121,7 @@ class Apmokejimai
      *
      * @param \DateTime $apmokejimoData
      *
-     * @return Apmokejimai
+     * @return Apmokejimas
      */
     public function setApmokejimoData($apmokejimoData)
     {
@@ -123,6 +138,50 @@ class Apmokejimai
     public function getApmokejimoData()
     {
         return $this->apmokejimoData;
+    }
+
+    /**
+     * Set uzsakymas
+     *
+     * @param \AppBundle\Entity\Uzsakymas $uzsakymas
+     *
+     * @return Apmokejimas
+     */
+    public function setUzsakymas(\AppBundle\Entity\Uzsakymas $uzsakymas = null)
+    {
+        $this->uzsakymas = $uzsakymas;
+        return $this;
+    }
+    /**
+     * Get uzsakymas
+     *
+     * @return \AppBundle\Entity\Uzsakymas
+     */
+    public function getUzsakymas()
+    {
+        return $this->uzsakymas;
+    }
+
+    /**
+     * Set pervedimo_tipas
+     *
+     * @param \AppBundle\Entity\pervedimo_tipas $pervedimo_tipas
+     *
+     * @return Apmokejimas
+     */
+    public function setPervedimoTipas(\AppBundle\Entity\pervedimo_tipas $pervedimo_tipas = null)
+    {
+        $this->pervedimo_tipas = $pervedimo_tipas;
+        return $this;
+    }
+    /**
+     * Get pervedimo_tipas
+     *
+     * @return \AppBundle\Entity\pervedimo_tipas
+     */
+    public function getPervedimoTipas()
+    {
+        return $this->pervedimo_tipas;
     }
 }
 

@@ -17,6 +17,16 @@ class User
 {
 
     /**
+     * @ORM\OneToMany(targetEntity="Uzsakymas", mappedBy="user", cascade={"remove"})
+     */
+    private $uzsakymai;
+
+    /**
+     * @ORM\OneToMany(targetEntity="pran_vart", mappedBy="user", cascade={"remove"})
+     */
+    private $pran_varts;
+
+    /**
      * @ORM\OneToMany(targetEntity="vart_role", mappedBy="user", cascade={"remove"})
      */
     private $vart_roles;
@@ -289,6 +299,7 @@ class User
     public function __construct()
     {
         $this->vart_roles = new ArrayCollection();
+        $this->uzsakymai = new ArrayCollection();
     }
     /**
      * Add vart_role
@@ -319,6 +330,68 @@ class User
     public function getVart_roles()
     {
         return $this->vart_roles;
+    }
+
+        /**
+     * Add pran_vart
+     *
+     * @param \AppBundle\Entity\pran_vart $pran_vart
+     *
+     * @return User
+     */
+    public function addPran_vart(\AppBundle\Entity\pran_vart $pran_vart)
+    {
+        $this->pran_varts[] = $pran_vart;
+        return $this;
+    }
+    /**
+     * Remove pran_vart
+     *
+     * @param \AppBundle\Entity\pran_vart $pran_vart
+     */
+    public function removePran_vart(\AppBundle\Entity\pran_vart $pran_vart)
+    {
+        $this->pran_varts->removeElement($pran_vart);
+    }
+    /**
+     * Get pran_varts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPran_varts()
+    {
+        return $this->vart_roles;
+    }
+
+    /**
+     * Add uzsakymas
+     *
+     * @param \AppBundle\Entity\Uzsakymas $uzsakymas
+     *
+     * @return User
+     */
+    public function addUzsakymas(\AppBundle\Entity\Uzsakymas $uzsakymas)
+    {
+        $this->uzsakymai[] = $uzsakymas;
+        return $this;
+    }
+    /**
+     * Remove uzsakymas
+     *
+     * @param \AppBundle\Entity\Uzsakymas $uzsakymas
+     */
+    public function removeUzsakymas(\AppBundle\Entity\Uzsakymas $uzsakymas)
+    {
+        $this->uzsakymai->removeElement($uzsakymas);
+    }
+    /**
+     * Get uzsakymai
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUzsakymai()
+    {
+        return $this->uzsakymai;
     }
 }
 
