@@ -132,10 +132,11 @@ class NotificationController extends FOSRestController
                 $pran_vart->setUser($user);
                 $pran_vart->setPranesimas($data);
                 $em->persist($pran_vart);
-                $em->flush();
-                return new View("Message sent beautifully", Response::HTTP_OK);
-            }
                 
+                
+            }
+            $em->flush();
+            return new View("Message sent beautifully", Response::HTTP_OK);
         }
         else {
             return new View("You don't have permision!", Response::HTTP_NOT_FOUND);

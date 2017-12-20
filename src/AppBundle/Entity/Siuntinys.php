@@ -59,14 +59,14 @@ class Siuntinys
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sandelio_pasiekimo_data", type="datetime")
+     * @ORM\Column(name="sandelio_pasiekimo_data", type="datetime", nullable=true)
      */
     private $sandelioPasiekimoData;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sandelio_palikimo_data", type="datetime")
+     * @ORM\Column(name="sandelio_palikimo_data", type="datetime", nullable=true)
      */
     private $sandelioPalikimoData;
 
