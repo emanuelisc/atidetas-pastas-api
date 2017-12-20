@@ -86,9 +86,6 @@ class ReportController extends FOSRestController
             array('activeOrders' => count($restresult))
         );
     }
-//warehousecontent
-//notification
-//
     /**
      * @Rest\Get("/Report/FinishedOrdersReport")
      */
@@ -141,6 +138,72 @@ class ReportController extends FOSRestController
                 'suma' => $suma
             )
         );
+    }
+    
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @Rest\Get("/Report/Notifications")
+     */
+    public function getNotiAction()
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+        $restresult = $em->getRepository('AppBundle:Pranesimas')->findAll();
+        if ($restresult === null) {
+            return new JSonResponse(
+                array('messages' => "0")
+            );
+        }
+        $masyvas = array();
+        $masI = 0;
+        foreach($restresult as $pranesimas){
+            $pran_varts = $pranesimas->getPran_varts();
+            $pranid = $pranesimas->getId();
+            $kiekis = 0;
+            foreach ($pran_varts as $varts) {
+                $kiekis++;
+            }
+            $masyvas[$masI] = array('pavadinimas' => $pranesimas->getPavadinimas(), 'kiekis' => $kiekis);
+            $masI++;
+        }
+        return $masyvas;
+        // return new JSonResponse(
+        //     array(
+        //         'name' => count($restresult),
+        //         'suma' => $suma
+        //     )
+        // );
     }
     
         else {
