@@ -391,7 +391,7 @@ class OrderController extends FOSRestController
         $role = 0;
         foreach ($vartroles as $vartrole){
             $rols = $vartrole->getRole()->getId();
-            if($rols == 1 || $rols == 3 || $rols = 2)
+            if($rols == 1 || $rols = 2)
                 $role = 1;
         }
         if ($role == 1){
