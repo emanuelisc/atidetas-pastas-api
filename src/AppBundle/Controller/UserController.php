@@ -115,7 +115,7 @@ class UserController extends FOSRestController
             $sn->remove($user);
             $sn->flush();
         }
-        return new View("deleted successfully", Response::HTTP_OK);
+        return new View($id, Response::HTTP_OK);
     }
 
     /**
