@@ -363,7 +363,7 @@ class OrderController extends FOSRestController
     }
 
     /**
-     * @Rest\PUT("/OrderStatus/{id}")
+     * @Rest\Post("/OrderStatus/{id}")
      */
     public function changeOrderStatusAction($id, Request $request)
     {
