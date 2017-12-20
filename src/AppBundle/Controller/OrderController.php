@@ -25,7 +25,6 @@ class OrderController extends FOSRestController
      */
     public function settingAction(Request $request)
     {
-        //cia tik tikrinam, ar turi vartotojsa leidimus
         if(!function_exists('getallheaders'))
         {
             function getallheaders()
@@ -41,7 +40,6 @@ class OrderController extends FOSRestController
             }
         }
         $head = getallheaders();
-
         $em = $this->getDoctrine()->getManager();
         $member = $em->getRepository('AppBundle:User')->findOneBy(
             array('token' => $head['token'])
@@ -99,23 +97,16 @@ class OrderController extends FOSRestController
                 $role = 2;
         }
         if ($role == 2){
+            //$uzsakymai = $em->getRepository('AppBundle:Uzsakymas')->findBy(array('user' => $member->getID()));
+
             $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u WHERE u.user = ".$member->getId());
+
             $uzsakymai = $query->getResult();
-//            $uzsakymai = $em->getRepository('AppBundle:Uzsakymas')->findOneBy(
-//                array('gavejoAdresas' => "Kaunas")
-//            );
-            //array('vartotojo_id' => $member)
-            // );
-            if(empty($uzsakymai)||$uzsakymai=null){
+
+            if(empty($uzsakymai)){
                 return new View("There is no orders yet!", Response::HTTP_NOT_FOUND);
             }
             else{
-//                $response = new Response();
-//                $response->setContent(json_encode([
-//                    'orders' => $uzsakymai->getGavejoAdresas(),
-//                ]));
-//                $response->headers->set('Content-Type', 'application/json');
-//                return $response;
                 return $uzsakymai;
             }
         } else {
@@ -241,7 +232,7 @@ class OrderController extends FOSRestController
                 $role = 1;
         }
         if ($role == 1){
-            $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u LEFT  JOIN AppBundle:Siuntinys s WITH u.id = s.uzsakymas WHERE s.yraSandelyje = 1");
+            $query = $em->createQuery("SELECT u.id, u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u LEFT  JOIN AppBundle:Siuntinys s WITH u.id = s.uzsakymas WHERE s.yraSandelyje = 1");
             $uzsakymai = $query->getResult();
             if(empty($uzsakymai)){
                 return new View("There is no orders yet!", Response::HTTP_NOT_FOUND);
@@ -254,9 +245,9 @@ class OrderController extends FOSRestController
         }
     }
     /**
-     * @Rest\Get("/WarehouseList/id")
+     * @Rest\Get("/WarehouseList/{id}")
      */
-    public function orderInfotAction($id, Request $request)
+    public function orderiInfoAction($id, Request $request)
     {
         //cia tik tikrinam, ar turi vartotojsa leidimus
         if(!function_exists('getallheaders'))
@@ -286,16 +277,148 @@ class OrderController extends FOSRestController
                 $role = 1;
         }
         if ($role == 1){
-            $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u LEFT  JOIN AppBundle:Siuntinys s WITH u.id = s.uzsakymas WHERE s.yraSandelyje = 1");
-            $uzsakymai = $query->getResult();
-            if(empty($uzsakymai)){
-                return new View("There is no orders yet!", Response::HTTP_NOT_FOUND);
+            
+            $uzsakymoInfo = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->find($id);
+              //  array('id' => $id)
+           // );
+            if(empty($uzsakymoInfo)){
+                return new View("Order doesn`t exist!", Response::HTTP_NOT_FOUND);
             }
-            else{
-                return $uzsakymai;
-            }
+            $perdavimas = $uzsakymoInfo->getPerdavimoTipas();
+            $busena= $uzsakymoInfo->getUzsakymoBusena();
+
+            $response = new Response();
+            $response->setContent(json_encode([
+                'busena' => $busena->getId(),
+                'perdavimas' => $perdavimas->getId(),
+                'gavejo_adresas' => $uzsakymoInfo->getGavejoAdresas(),
+                'siuntejo_adresas' => $uzsakymoInfo->getSiuntejoAdresas(),
+                'gavimo_data' => $uzsakymoInfo->getGavimoData(),
+                'uzsakymo_data'=>$uzsakymoInfo->getUzsakymoData()
+            ]));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
         } else {
             return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
         }
     }
+
+    /**
+     * @Rest\Get("/OrderInfo/{id}")
+     */
+    public function orderInfoAction($id, Request $request)
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+            function getallheaders()
+            {
+                foreach($_SERVER as $name => $value)
+                {
+                    if(substr($name, 0, 5) == 'HTTP_')
+                    {
+                        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                    }
+                }
+                return $headers;
+            }
+        }
+        $head = getallheaders();
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+        $role = 0;
+        foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1 || $rols == 3 || $rols = 2)
+                $role = 1;
+        }
+        if ($role == 1){
+
+            $uzsakymoInfo = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->find($id);
+            //  array('id' => $id)
+            // );
+            if(empty($uzsakymoInfo)){
+                return new View("Order doesn`t exist!", Response::HTTP_NOT_FOUND);
+            }
+            $perdavimas = $uzsakymoInfo->getPerdavimoTipas();
+            $busena= $uzsakymoInfo->getUzsakymoBusena();
+
+            $response = new Response();
+            $response->setContent(json_encode([
+                'busena' => $busena->getId(),
+                'perdavimas' => $perdavimas->getId(),
+                'gavejo_adresas' => $uzsakymoInfo->getGavejoAdresas(),
+                'siuntejo_adresas' => $uzsakymoInfo->getSiuntejoAdresas(),
+                'gavimo_data' => $uzsakymoInfo->getGavimoData(),
+                'uzsakymo_data'=>$uzsakymoInfo->getUzsakymoData()
+            ]));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        } else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @Rest\PUT("/OrderStatus/{id}")
+     */
+    public function changeOrderStatusAction($id, Request $request)
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+            function getallheaders()
+            {
+                foreach($_SERVER as $name => $value)
+                {
+                    if(substr($name, 0, 5) == 'HTTP_')
+                    {
+                        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                    }
+                }
+                return $headers;
+            }
+        }
+        $head = getallheaders();
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+        $role = 0;
+        foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1 || $rols == 3 || $rols = 2)
+                $role = 1;
+        }
+        if ($role == 1){
+
+            $uzsakymas = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->find($id);
+            if(empty($uzsakymas)){
+                return new View("Order doesn`t exist!", Response::HTTP_NOT_FOUND);
+            }
+
+            $busenaId=$request->get('status_id');
+            if(empty($busenaId)){
+                return new View("NULL VALUES ARE NOT ALLOWED", Response::HTTP_NOT_ACCEPTABLE);
+            }
+            $busena =$this->getDoctrine()->getRepository('AppBundle:uzsakymo_busena')->find($busenaId);
+            if ($busena == null){
+                return new View("Status is unavailable!", Response::HTTP_NOT_FOUND);
+            }
+            $uzsakymas->setUzsakymoBusena($busena);
+            $em->flush();
+            //  array('id' => $id)
+            // );
+
+            return new View("Status Updated Successfully", Response::HTTP_OK);
+            //return $response;
+        } else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
 }
