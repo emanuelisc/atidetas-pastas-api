@@ -10,4 +10,5 @@ namespace AppBundle\Repository;
  */
 class UzsakymasRepository extends \Doctrine\ORM\EntityRepository
 {
+    
 }

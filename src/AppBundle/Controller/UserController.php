@@ -266,7 +266,7 @@ class UserController extends FOSRestController
          $role = 0;
          foreach ($vartroles as $vartrole){
             $rols = $vartrole->getRole()->getId();
-            if($rols == 2)
+            if($rols == 2 || $rols == 1)
                 $role = 2;
          } 
         if ($role == 2){
@@ -391,21 +391,93 @@ class UserController extends FOSRestController
                 $role = 1;
          } 
         if ($role == 1){
+            $vart_roles = $em->getRepository('AppBundle:vart_role')->findBy(array('role' => 1));
+            return $vart_roles;
+        }
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
 
-            $masyvas = array();
-            $query = $em->createQuery("SELECT u.id, u.vardas, u.pavarde, u.pastas FROM AppBundle:User u");
-            $users = $query->getResult();
-            $i = 0;
-            foreach ($users as $user){
-               $vartAdmino = $user->getVart_roles();
-               foreach ($vartAdmino as $usvarter){
-                $adminas = $usvarter->getRole()->getId();
-                if($adminas == 1)
-                   $masyvas[$i] = $user;
-                   $i++;
-               }
-            } 
-            return $masyvas;
+
+        /**
+     * @Rest\Get("/UserList")
+     */
+    public function getUserListAction()
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+            $vart_roles = $em->getRepository('AppBundle:vart_role')->findBy(array('role' => 2));
+            return $vart_roles;
+        }
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+
+         /**
+     * @Rest\Get("/SandelList")
+     */
+    public function getSandelListAction()
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+            $vart_roles = $em->getRepository('AppBundle:vart_role')->findBy(array('role' => 2));
+            return $vart_roles;
         }
         else {
             return new View("You don't have permision!", Response::HTTP_NOT_FOUND);

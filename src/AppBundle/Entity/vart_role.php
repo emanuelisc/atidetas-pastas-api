@@ -31,6 +31,7 @@ class vart_role
     private $user;
 
     /**
+     * 
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="vart_roles")
      * @ORM\JoinColumn(name="roles_id", referencedColumnName="id")
      */

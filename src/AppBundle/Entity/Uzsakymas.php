@@ -17,7 +17,7 @@ class Uzsakymas
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="Siuntinys", mappedBy="uzsakymo_id", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Siuntinys", mappedBy="uzsakymas", cascade={"remove"})
      */
     private $siuntiniai;
     /**
@@ -30,7 +30,7 @@ class Uzsakymas
      * @ORM\ManyToOne(targetEntity="User", inversedBy="uzsakymai")
      * @ORM\JoinColumn(name="vartotojo_id", referencedColumnName="id")
      */
-    private $vartotojas;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="perdavimo_tipas", inversedBy="uzsakymai")
@@ -303,25 +303,25 @@ class Uzsakymas
     }
 
     /**
-     * Set vartotojas
+     * Set user
      *
-     * @param \AppBundle\Entity\User $vartotojas
+     * @param \AppBundle\Entity\User $user
      *
      * @return Uzsakymas
      */
-    public function setVartotojas(\AppBundle\Entity\User $vartotojas = null)
+    public function setVartotojas(\AppBundle\Entity\User $user = null)
     {
-        $this->vartotojas = $vartotojas;
+        $this->user = $user;
         return $this;
     }
     /**
-     * Get vartotojas
+     * Get user
      *
      * @return \AppBundle\Entity\User
      */
     public function getVartotojas()
     {
-        return $this->vartotojas;
+        return $this->user;
     }
 
     /**

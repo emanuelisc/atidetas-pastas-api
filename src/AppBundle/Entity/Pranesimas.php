@@ -157,7 +157,7 @@ class Pranesimas
         $this->pran_varts->removeElement($pran_vart);
     }
     /**
-     * Get pran_varts
+     * Get pranvarts
      *
      * @return \Doctrine\Common\Collections\Collection
      */
