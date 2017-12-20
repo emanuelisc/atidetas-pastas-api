@@ -266,7 +266,7 @@ class UserController extends FOSRestController
          $role = 0;
          foreach ($vartroles as $vartrole){
             $rols = $vartrole->getRole()->getId();
-            if($rols == 2 || $rols == 1)
+            if($rols == 2 || $rols == 1|| $rols == 1)
                 $role = 2;
          } 
         if ($role == 2){

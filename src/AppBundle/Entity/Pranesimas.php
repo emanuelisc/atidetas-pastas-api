@@ -3,6 +3,10 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Pranesimas
@@ -42,9 +46,9 @@ class Pranesimas
     private $pavadinimas;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="data", type="datetime")
+     * @ORM\Column(name="data", type="string", length=255)
      */
     private $data;
 
