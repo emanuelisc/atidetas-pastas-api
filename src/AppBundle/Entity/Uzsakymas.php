@@ -73,14 +73,14 @@ class Uzsakymas
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="gavimo_data", type="date")
+     * @ORM\Column(name="gavimo_data", type="date", nullable=true)
      */
     private $gavimoData;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="uzsakymo_data", type="datetime")
+     * @ORM\Column(name="uzsakymo_data", type="datetime", nullable=true)
      */
     private $uzsakymoData;
 

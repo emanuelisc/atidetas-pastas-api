@@ -30,7 +30,9 @@ class ReportController extends FOSRestController
     {
         $restresult = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->findAll();
         if ($restresult === null) {
-            return new View("there are no orders yet", Response::HTTP_NOT_FOUND);
+            return new JSonResponse(
+                array('allorders' => 0)
+            );
         }
         return new JSonResponse(
             array('allorders' => count($restresult))
@@ -42,11 +44,12 @@ class ReportController extends FOSRestController
      */
     public function getActiveAction()
     {
-      $restresult = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('uzsakymo_busena' => 1));
+      $restresult = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->findBy(array('uzsakymo_busena' => 1));
         if ($restresult === null) {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+            return new JSonResponse(
+                array('activeOrders' => 0)
+            );
         }
-        return $restresult;
         return new JSonResponse(
             array('activeOrders' => count($restresult))
         );
@@ -57,11 +60,12 @@ class ReportController extends FOSRestController
      */
     public function getInActiveAction()
     {
-      $restresult = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('uzsakymo_busena' => 2));
+      $restresult = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->findBy(array('uzsakymo_busena' => 2));
         if ($restresult === null) {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+            return new JSonResponse(
+                array('activeOrders' => 0)
+            );
         }
-        return $restresult;
         return new JSonResponse(
             array('activeOrders' => count($restresult))
         );
@@ -72,13 +76,75 @@ class ReportController extends FOSRestController
      */
     public function getProcAction()
     {
-      $restresult = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('uzsakymo_busena' => 3));
+      $restresult = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->findBy(array('uzsakymo_busena' => 3));
         if ($restresult === null) {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+            return new JSonResponse(
+                array('activeOrders' => 0)
+            );
         }
-        return $restresult;
         return new JSonResponse(
             array('activeOrders' => count($restresult))
         );
+    }
+//warehousecontent
+//notification
+//
+    /**
+     * @Rest\Get("/Report/FinishedOrdersReport")
+     */
+    public function getFinProcAction()
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+         function getallheaders() 
+         {
+          foreach($_SERVER as $name => $value)
+          {
+           if(substr($name, 0, 5) == 'HTTP_')
+           {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+          }
+          return $headers;
+         }
+        }   
+        $head = getallheaders();
+        
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+         $role = 0;
+         foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1)
+                $role = 1;
+         } 
+        if ($role == 1){
+        $restresult = $this->getDoctrine()->getRepository('AppBundle:Uzsakymas')->findBy(array('uzsakymo_busena' => 3));
+        if ($restresult === null) {
+            return new JSonResponse(
+                array('activeOrders' => "Špyga tau!")
+            );
+        }
+        $margin = $em->getRepository('AppBundle:Settings')->find(1)->getMargin();
+        $suma = 0;
+        for ($in = 0; $in < count($restresult); $in++) {
+            $suma = $suma + intval($margin) * count($restresult);
+        }
+
+        return new JSonResponse(
+            array(
+                'finOrders' => count($restresult),
+                'suma' => $suma
+            )
+        );
+    }
+    
+        else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
     }
 }
