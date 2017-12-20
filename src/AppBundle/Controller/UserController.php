@@ -119,7 +119,7 @@ class UserController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/UserList")
+     * @Rest\Get("/UserList2")
      */
     public function getUsersAction()
     {
@@ -442,8 +442,8 @@ class UserController extends FOSRestController
         }
     }
 
-         /**
-     * @Rest\Get("/SandelList")
+    /**
+     * @Rest\Get("/SupervisorList")
      */
     public function getSandelListAction()
     {
@@ -476,7 +476,7 @@ class UserController extends FOSRestController
                 $role = 1;
          } 
         if ($role == 1){
-            $vart_roles = $em->getRepository('AppBundle:vart_role')->findBy(array('role' => 2));
+            $vart_roles = $em->getRepository('AppBundle:vart_role')->findBy(array('role' => 3));
             return $vart_roles;
         }
         else {
