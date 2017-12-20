@@ -99,14 +99,14 @@ class OrderController extends FOSRestController
                 $role = 2;
         }
         if ($role == 2){
-            $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u WHERE u.vartotojas = ".$member->getId());
+            $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u WHERE u.user = ".$member->getId());
             $uzsakymai = $query->getResult();
 //            $uzsakymai = $em->getRepository('AppBundle:Uzsakymas')->findOneBy(
 //                array('gavejoAdresas' => "Kaunas")
 //            );
             //array('vartotojo_id' => $member)
             // );
-            if(empty($uzsakymai)){
+            if(empty($uzsakymai)||$uzsakymai=null){
                 return new View("There is no orders yet!", Response::HTTP_NOT_FOUND);
             }
             else{
@@ -209,8 +209,8 @@ class OrderController extends FOSRestController
         }
     }
     /**
-     * @Rest\Get("/WarehouseList")
-     */
+ * @Rest\Get("/WarehouseList")
+ */
     public function warehouseListAction(Request $request)
     {
         //cia tik tikrinam, ar turi vartotojsa leidimus
@@ -237,27 +237,61 @@ class OrderController extends FOSRestController
         $role = 0;
         foreach ($vartroles as $vartrole){
             $rols = $vartrole->getRole()->getId();
-            if($rols == 1 ) //jei tai adminas arba sandelininkas
+            if($rols == 1 || $rols == 3)
                 $role = 1;
         }
         if ($role == 1){
-            $query = $em->createQuery("SELECT u.perdavimo_tipas, u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u LEFT  JOIN AppBundle:Siuntinys s WITH u.id = s.uzsakymas WHERE s.yraSandelyje = 1");
+            $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u LEFT  JOIN AppBundle:Siuntinys s WITH u.id = s.uzsakymas WHERE s.yraSandelyje = 1");
             $uzsakymai = $query->getResult();
-//            $uzsakymai = $em->getRepository('AppBundle:Uzsakymas')->findOneBy(
-//                array('gavejoAdresas' => "Kaunas")
-//            );
-            //array('vartotojo_id' => $member)
-            // );
             if(empty($uzsakymai)){
                 return new View("There is no orders yet!", Response::HTTP_NOT_FOUND);
             }
             else{
-//                $response = new Response();
-//                $response->setContent(json_encode([
-//                    'orders' => $uzsakymai->getGavejoAdresas(),
-//                ]));
-//                $response->headers->set('Content-Type', 'application/json');
-//                return $response;
+                return $uzsakymai;
+            }
+        } else {
+            return new View("You don't have permision!", Response::HTTP_NOT_FOUND);
+        }
+    }
+    /**
+     * @Rest\Get("/WarehouseList/id")
+     */
+    public function orderInfotAction($id, Request $request)
+    {
+        //cia tik tikrinam, ar turi vartotojsa leidimus
+        if(!function_exists('getallheaders'))
+        {
+            function getallheaders()
+            {
+                foreach($_SERVER as $name => $value)
+                {
+                    if(substr($name, 0, 5) == 'HTTP_')
+                    {
+                        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                    }
+                }
+                return $headers;
+            }
+        }
+        $head = getallheaders();
+        $em = $this->getDoctrine()->getManager();
+        $member = $em->getRepository('AppBundle:User')->findOneBy(
+            array('token' => $head['token'])
+        );
+        $vartroles = $member->getVart_roles();
+        $role = 0;
+        foreach ($vartroles as $vartrole){
+            $rols = $vartrole->getRole()->getId();
+            if($rols == 1 || $rols == 3)
+                $role = 1;
+        }
+        if ($role == 1){
+            $query = $em->createQuery("SELECT u.gavejoAdresas, u.siuntejoAdresas, u.gavimoData FROM AppBundle:Uzsakymas u LEFT  JOIN AppBundle:Siuntinys s WITH u.id = s.uzsakymas WHERE s.yraSandelyje = 1");
+            $uzsakymai = $query->getResult();
+            if(empty($uzsakymai)){
+                return new View("There is no orders yet!", Response::HTTP_NOT_FOUND);
+            }
+            else{
                 return $uzsakymai;
             }
         } else {
